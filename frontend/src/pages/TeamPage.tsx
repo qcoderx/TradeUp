@@ -3,6 +3,18 @@ import { cx } from "../lib/format";
 import type { TeamMember } from "../lib/types";
 import { Avatar, ErrorState, Skeleton } from "../components/ui";
 
+/**
+ * The badge is small and set in uppercase mono, so long titles are trimmed to
+ * something that fits. Anything unrecognised is shown as it comes, rather than
+ * being silently mislabelled as one of the roles we happen to know about.
+ */
+function shortRole(role: string): string {
+  if (role === "Team Captain") return "Captain";
+  if (role === "Assistant Team Captain") return "Assistant";
+  if (role === "Lead Developer") return "Lead dev";
+  return role;
+}
+
 /** Initials from a full name, matching how the backend builds them. */
 function initialsOf(fullName: string): string {
   const parts = fullName.trim().split(/\s+/);
@@ -152,7 +164,7 @@ function MemberCard({ member, lead = false }: { member: TeamMember; lead?: boole
 
       {lead && (
         <span className="shrink-0 self-start rounded-md bg-green-soft px-2 py-1 font-mono text-[0.625rem] tracking-wide text-green uppercase">
-          {member.role === "Team Captain" ? "Captain" : "Assistant"}
+          {shortRole(member.role)}
         </span>
       )}
     </article>

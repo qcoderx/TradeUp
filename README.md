@@ -27,7 +27,7 @@ invisible.
 | 240805034 | Obi Omasirichukwu Joan | Computer Science | Member |
 | 240313022 | Adebayo Mistura Temitope | Science Education | Member |
 | 240805036 | Adeniran Abdurrahman Adebolaji | Computer Science | Member |
-| 240817008 | Lasisi Quadri Toluwalase | Data Science | Member |
+| 240817008 | Lasisi Quadri Toluwalase | Data Science | **Lead Developer** |
 | 240805111 | Harrison Blessing Idoreyin | Computer Science | Member |
 | 252609512 | Olawunmi Afolabi Olajumoke | Data Science | Member |
 | 240817013 | Salami Abdulmalik Ayobami | Data Science | Member |
