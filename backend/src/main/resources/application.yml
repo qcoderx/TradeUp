@@ -2,14 +2,31 @@ spring:
   application:
     name: tradeup
 
-  # Embedded JDBC database, written to ./data so the marketplace survives a restart.
-  # This is the proposal's Phase 2 stretch goal; see the mysql profile below for the
-  # MySQL alternative.
+  config:
+    # Loads backend/.env as a property source. It is optional so a deployment can
+    # supply the same names as real environment variables instead, and the
+    # .properties hint tells Boot how to parse a file with no recognised suffix.
+    import: optional:file:.env[.properties]
+
+  # PostgreSQL (Neon). Credentials are never written here: they come from
+  # backend/.env, which is gitignored, or from real environment variables in a
+  # deployment. There is deliberately no fallback value — if the configuration is
+  # missing the application refuses to start rather than quietly running against
+  # some other database.
   datasource:
-    url: jdbc:h2:file:./data/tradeup;AUTO_SERVER=TRUE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: ""
+    url: ${TRADEUP_DB_URL}
+    username: ${TRADEUP_DB_USER}
+    password: ${TRADEUP_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      # Neon's pooled endpoint is shared and serverless, so keep the pool small
+      # and let idle connections go rather than holding them open.
+      maximum-pool-size: 8
+      minimum-idle: 1
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetime: 900000
+      pool-name: tradeup-pool
 
   jpa:
     hibernate:
@@ -20,12 +37,9 @@ spring:
         format_sql: true
         jdbc:
           batch_size: 25
+          lob:
+            non_contextual_creation: true
         order_inserts: true
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
 
   servlet:
     multipart:
@@ -71,14 +85,13 @@ logging:
 
 tradeup:
   security:
-    # Override this in any real deployment, e.g. with the TRADEUP_SECURITY_JWT_SECRET
-    # environment variable. It must be at least 32 characters.
-    jwt-secret: ${TRADEUP_JWT_SECRET:tradeup-unilag-cos202-group15-development-signing-key}
+    # Must be at least 32 characters. Set it in backend/.env.
+    jwt-secret: ${TRADEUP_JWT_SECRET}
     token-validity: P7D
     issuer: tradeup
 
   cors:
-    allowed-origins: http://localhost:5173,http://localhost:4173,http://127.0.0.1:5173
+    allowed-origins: ${TRADEUP_CORS_ORIGINS:http://localhost:5173,http://localhost:4173,http://127.0.0.1:5173}
 
   storage:
     upload-dir: ./data/uploads
@@ -86,22 +99,27 @@ tradeup:
     public-prefix: /uploads
 
   seed:
-    # Fills an empty database with the team, a catalogue and some completed trades
-    # so the app has something to show on first run.
-    enabled: true
+    # Fills an empty database with the team, a catalogue and some completed
+    # trades. It only runs when the users table is empty, so it is safe to leave
+    # on — but turn it off for anything resembling production.
+    enabled: ${TRADEUP_SEED_ENABLED:true}
 
 ---
-# Run with -Dspring.profiles.active=mysql once a MySQL server is available.
+# Offline fallback: an embedded file database, no network and no credentials.
+#   ./mvnw spring-boot:run -Dspring-boot.run.profiles=h2
 spring:
   config:
     activate:
-      on-profile: mysql
+      on-profile: h2
   datasource:
-    url: jdbc:mysql://localhost:3306/tradeup?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${MYSQL_USER:root}
-    password: ${MYSQL_PASSWORD:}
+    url: jdbc:h2:file:./data/tradeup;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update

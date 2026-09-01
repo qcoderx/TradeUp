@@ -39,13 +39,36 @@ the site and the names in the proposal come from one place.
 
 ## Running it
 
-You need **JDK 21+** and **Node 20+**. Nothing else — the database is embedded and the Maven
-wrapper downloads Maven on first use.
+You need **JDK 21+** and **Node 20+**. The Maven wrapper downloads Maven on first use.
 
-### 1. Start the Java API
+### 1. Configure the database
+
+Credentials live in `backend/.env`, which is gitignored and must never be committed.
 
 ```bash
 cd backend
+cp .env.example .env
+```
+
+Fill in your PostgreSQL connection (we use [Neon](https://neon.tech)) and a JWT signing key.
+The connection string Neon hands you is in libpq form, so rewrite it for JDBC:
+
+```
+postgresql://USER:PASSWORD@HOST/neondb?sslmode=require   ->   jdbc:postgresql://HOST/neondb?sslmode=require
+```
+
+with the user and password as separate entries. Drop `channel_binding` — it is a libpq
+option the JDBC driver does not accept.
+
+No database to hand? Run entirely offline against an embedded file database instead:
+
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=h2
+```
+
+### 2. Start the Java API
+
+```bash
 ./mvnw spring-boot:run          # Windows: mvnw.cmd spring-boot:run
 ```
 
@@ -53,7 +76,7 @@ It comes up on **http://localhost:8080** and, on an empty database, seeds itself
 eleven Group 15 accounts, sixteen listings, some completed trades, a couple of live
 conversations, a pending offer and one open moderation report.
 
-### 2. Start the interface
+### 3. Start the interface
 
 ```bash
 cd frontend
@@ -64,7 +87,7 @@ npm run dev
 Open **http://localhost:5173**. The dev server proxies `/api` to the backend, so there is
 nothing to configure.
 
-### 3. Sign in
+### 4. Sign in
 
 Every seeded account uses the password `TradeUp2026!`.
 
@@ -73,8 +96,16 @@ Every seeded account uses the password `TradeUp2026!`.
 | `joan.obi@live.unilag.edu.ng` | A normal student: listings, an offer waiting, unread messages |
 | `okiki.adebowale@live.unilag.edu.ng` | The same, plus the **moderation queue** and the data exports |
 
-> These credentials are development seed data only. Set `tradeup.seed.enabled: false`
-> and a real `TRADEUP_JWT_SECRET` before this goes anywhere near a real deployment.
+> These credentials are development seed data only. Set `TRADEUP_SEED_ENABLED=false` and a
+> strong `TRADEUP_JWT_SECRET` before this goes anywhere near a real deployment.
+
+### A note on secrets
+
+Nothing secret is in this repository. `backend/.env` is gitignored; `backend/.env.example`
+shows the shape with placeholder values. `application.yml` reads every credential through
+`${...}` with **no fallback**, so a missing value stops the application rather than letting
+it quietly start against the wrong database. In a deployment, set the same names as real
+environment variables and skip the `.env` entirely.
 
 ---
 
@@ -109,7 +140,7 @@ application genuinely needs, not by a bolted-on example.
 | **Collections** | `ImpactService` groups trades with `EnumMap`; `ListingService` folds filters over a `List<Specification>`; `Conversation` counts unread messages with the Stream API; `ListingSpecifications` builds predicates from `Collection<Condition>`. |
 | **Exception handling** | `web/error/` — a small hierarchy under `AppException`, each carrying its own HTTP status and a sentence written for a student. `GlobalExceptionHandler` turns any of them into one JSON shape. |
 | **File I/O** | `ArchiveService` writes timestamped CSV and JSON with `java.nio.file`, try-with-resources, and correct CSV quoting. This is Phase 1 of the proposal, kept alongside the database rather than replaced by it. |
-| **Database connectivity** | Spring Data JPA over an embedded H2 file database via JDBC (Phase 2). A `mysql` profile is included for when a server is available. |
+| **Database connectivity** | Spring Data JPA over **PostgreSQL** via JDBC, hosted on Neon (Phase 2 of the proposal, and past it — a real networked server rather than a local file). An `h2` profile keeps an embedded database available for offline work, and the tests run against in-memory H2 so they never touch the shared database. |
 | **CRUD** | Create, browse/search, update and delete listings — plus the reserve → complete lifecycle that a real handover needs. |
 
 ### Deviation from the proposal, stated plainly
@@ -124,7 +155,7 @@ the same; the presentation layer is HTTP instead of Swing.
 ## Layout
 
 ```
-backend/    Java 21 · Spring Boot 3.5 · Spring Security · JPA · H2
+backend/    Java 21 · Spring Boot 3.5 · Spring Security · JPA · PostgreSQL
   domain/       entities, and the rules that belong to them
   repository/   Spring Data interfaces + the search Specifications
   service/      business logic, file exports, impact arithmetic
