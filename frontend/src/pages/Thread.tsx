@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, Send } from "lucide-react";
-import { ApiError, request } from "../lib/api";
+import { ApiError, assetUrl, request } from "../lib/api";
 import { useApi } from "../lib/useApi";
 import { cx, formatPrice, formatTime, timeAgo } from "../lib/format";
 import type { ConversationDetail, MessageView } from "../lib/types";
@@ -81,7 +81,7 @@ export function Thread() {
       >
         {data.listing.primaryImageUrl && (
           <img
-            src={data.listing.primaryImageUrl}
+            src={assetUrl(data.listing.primaryImageUrl)}
             alt=""
             className="h-14 w-14 shrink-0 rounded-lg object-cover"
           />

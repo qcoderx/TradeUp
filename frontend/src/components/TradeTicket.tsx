@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Bookmark, ImageOff, Leaf, Repeat2 } from "lucide-react";
-import { request } from "../lib/api";
+import { assetUrl, request } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import { cx, formatOwnerGeneration, formatPrice } from "../lib/format";
 import type { ListingCard } from "../lib/types";
@@ -65,7 +65,7 @@ export function TradeTicket({
         <div className="aspect-item relative overflow-hidden bg-sunk">
           {listing.primaryImageUrl && !imageFailed ? (
             <img
-              src={listing.primaryImageUrl}
+              src={assetUrl(listing.primaryImageUrl)}
               alt={listing.title}
               loading={priority ? "eager" : "lazy"}
               decoding="async"

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Check, Download, FileDown, ShieldCheck, X } from "lucide-react";
 import { ApiError, request } from "../lib/api";
-import { getToken } from "../lib/api";
+import { apiUrl, assetUrl, getToken } from "../lib/api";
 import { useApi } from "../lib/useApi";
 import { cx, timeAgo } from "../lib/format";
 import type { ReportView } from "../lib/types";
@@ -103,7 +103,7 @@ function ReportRow({ report, onResolved }: { report: ReportView; onResolved: () 
       <div className="flex flex-wrap items-start gap-4">
         {report.listingImageUrl && (
           <img
-            src={report.listingImageUrl}
+            src={assetUrl(report.listingImageUrl)}
             alt=""
             className="h-16 w-16 shrink-0 rounded-lg object-cover"
             loading="lazy"
@@ -214,7 +214,7 @@ function ExportControls() {
 
   async function download(fileName: string) {
     const token = getToken();
-    const response = await fetch(`/api/admin/archives/${encodeURIComponent(fileName)}`, {
+    const response = await fetch(apiUrl(`/admin/archives/${encodeURIComponent(fileName)}`), {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
     if (!response.ok) return;

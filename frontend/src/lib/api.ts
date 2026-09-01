@@ -3,6 +3,37 @@ import type { ApiErrorBody } from "./types";
 const TOKEN_KEY = "tradeup-token";
 
 /**
+ * Where the Java API lives.
+ *
+ * <p>Empty in development, because Vite proxies /api to localhost:8080 and the
+ * browser stays on one origin. In a deployment the frontend and the API are on
+ * different hosts, so this must be set to the API origin at BUILD time — Vite
+ * inlines VITE_* variables into the bundle, it does not read them at runtime.
+ *
+ * Trailing slashes are trimmed so both forms of the variable work.
+ */
+const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/+$/, "");
+
+/** Builds an absolute API URL. */
+export function apiUrl(path: string): string {
+  return `${API_BASE}/api${path}`;
+}
+
+/**
+ * Resolves a URL the API handed us.
+ *
+ * <p>Uploaded photos come back as {@code /uploads/...} and are served by the
+ * backend, so on a split deployment they have to be resolved against the API
+ * host. Seeded imagery under {@code /brand/...} is a static asset of this app
+ * and must be left alone.
+ */
+export function assetUrl(url: string | null | undefined): string | undefined {
+  if (!url) return undefined;
+  if (/^(https?:)?\/\//.test(url)) return url;
+  return url.startsWith("/uploads/") ? `${API_BASE}${url}` : url;
+}
+
+/**
  * A failed request, carrying the structured body the Java side sent.
  *
  * `fieldErrors` is what lets a form highlight the exact input that was
@@ -72,7 +103,7 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
 
   let response: Response;
   try {
-    response = await fetch(`/api${path}`, {
+    response = await fetch(apiUrl(path), {
       method,
       headers,
       body: body === undefined ? undefined : JSON.stringify(body),
@@ -105,7 +136,7 @@ export async function uploadFiles(files: File[]): Promise<string[]> {
   files.forEach((file) => form.append("files", file));
 
   const token = getToken();
-  const response = await fetch("/api/uploads", {
+  const response = await fetch(apiUrl("/uploads"), {
     method: "POST",
     headers: token ? { Authorization: `Bearer ${token}` } : {},
     body: form,

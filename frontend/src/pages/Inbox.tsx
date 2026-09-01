@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { MessagesSquare } from "lucide-react";
+import { assetUrl } from "../lib/api";
 import { useApi } from "../lib/useApi";
 import { timeAgo } from "../lib/format";
 import type { ConversationSummary } from "../lib/types";
@@ -39,7 +40,7 @@ export function Inbox() {
                 >
                   {conversation.listingImageUrl ? (
                     <img
-                      src={conversation.listingImageUrl}
+                      src={assetUrl(conversation.listingImageUrl)}
                       alt=""
                       className="h-14 w-14 shrink-0 rounded-lg object-cover"
                       loading="lazy"

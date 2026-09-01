@@ -198,6 +198,37 @@ The app binds `$PORT`, which Render sets, and falls back to 8080 locally. Becaus
 `spring.config.import` marks the `.env` as optional, the same configuration works from real
 environment variables with no file present.
 
+### Deploying the frontend
+
+The frontend is a static build and can go anywhere; ours is on Vercel. Two things have to be
+right or it will look deployed while being completely broken.
+
+**1. Point it at the API.** In development, Vite proxies `/api` to `localhost:8080`. A
+production build has no proxy, so relative `/api/...` calls hit the *frontend's* own host and
+return 404. Set the API origin as a build-time variable:
+
+```
+VITE_API_BASE_URL = https://your-api.onrender.com
+```
+
+Vite inlines `VITE_*` variables **at build time**, so changing this needs a fresh deploy — not
+just a restart.
+
+**2. Let the API accept the browser's origin.** Add the deployed site to the backend's
+`TRADEUP_CORS_ORIGINS` on Render, exactly as the browser sends it — scheme included, no
+trailing slash:
+
+```
+TRADEUP_CORS_ORIGINS = https://your-site.vercel.app,http://localhost:5173
+```
+
+Without this the API answers the preflight with 403 and the browser blocks every call, which
+shows up in the console as a CORS error rather than as anything obviously wrong with the API.
+
+`frontend/vercel.json` handles the third trap: the app routes client-side, so without a rewrite
+to `index.html` any deep link or page refresh on `/browse` asks the host for a file that does
+not exist and gets a 404.
+
 ### Two things to know before you rely on it
 
 **Uploaded photos do not survive a restart.** `StorageService` writes to local disk, and Render's

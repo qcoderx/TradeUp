@@ -12,7 +12,7 @@ import {
   Repeat2,
   Trash2,
 } from "lucide-react";
-import { ApiError, request } from "../lib/api";
+import { ApiError, assetUrl, request } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import { useApi } from "../lib/useApi";
 import { cx, formatDate, formatOwnerGeneration, formatPrice, timeAgo } from "../lib/format";
@@ -96,7 +96,7 @@ export function ListingPage() {
           <div className="aspect-item overflow-hidden rounded-2xl bg-sunk shadow-[var(--shadow-inset-line)]">
             {listing.imageUrls.length > 0 ? (
               <img
-                src={listing.imageUrls[activeImage]}
+                src={assetUrl(listing.imageUrls[activeImage])}
                 alt={`${listing.title}, photo ${activeImage + 1} of ${listing.imageUrls.length}`}
                 className="h-full w-full object-cover"
               />
@@ -121,7 +121,7 @@ export function ListingPage() {
                       : "opacity-70 hover:opacity-100"
                   )}
                 >
-                  <img src={url} alt="" className="h-full w-full object-cover" />
+                  <img src={assetUrl(url)} alt="" className="h-full w-full object-cover" />
                 </button>
               ))}
             </div>

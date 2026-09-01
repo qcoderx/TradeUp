@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ImagePlus, Loader2, X } from "lucide-react";
-import { ApiError, request, uploadFiles } from "../lib/api";
+import { ApiError, assetUrl, request, uploadFiles } from "../lib/api";
 import { useApi } from "../lib/useApi";
 import { cx, formatPrice } from "../lib/format";
 import type { ListingDetail, ReferenceData, TradeIntent } from "../lib/types";
@@ -156,7 +156,7 @@ export function SellPage() {
           <div className="flex flex-wrap gap-3">
             {form.imageUrls.map((url, index) => (
               <div key={url} className="group relative h-24 w-28 overflow-hidden rounded-lg bg-sunk">
-                <img src={url} alt={`Photo ${index + 1}`} className="h-full w-full object-cover" />
+                <img src={assetUrl(url)} alt={`Photo ${index + 1}`} className="h-full w-full object-cover" />
                 {index === 0 && (
                   <span className="absolute bottom-1 left-1 rounded bg-ink/80 px-1.5 py-0.5 font-mono text-[0.5625rem] tracking-wide text-paper uppercase">
                     Cover

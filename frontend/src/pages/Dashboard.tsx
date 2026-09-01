@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Bookmark, Check, PackagePlus, X } from "lucide-react";
-import { ApiError, request } from "../lib/api";
+import { ApiError, assetUrl, request } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import { useApi } from "../lib/useApi";
 import { formatAmount, formatCo2, timeAgo } from "../lib/format";
@@ -152,7 +152,7 @@ function OfferRow({ offer, onResolved }: { offer: OfferView; onResolved: () => v
     <Card className="flex flex-wrap items-center gap-4">
       {offer.listingImageUrl && (
         <img
-          src={offer.listingImageUrl}
+          src={assetUrl(offer.listingImageUrl)}
           alt=""
           className="h-14 w-14 shrink-0 rounded-lg object-cover"
           loading="lazy"
