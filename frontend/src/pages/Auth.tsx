@@ -97,37 +97,6 @@ export function SignIn() {
         </Button>
       </form>
 
-      {/* The seeded accounts, so a marker can get in without registering. */}
-      <div className="mt-6 rounded-xl bg-sunk p-4">
-        <p className="eyebrow">Demo accounts</p>
-        <p className="mt-2 text-xs leading-relaxed text-muted">
-          Any seeded student works with the password{" "}
-          <code className="font-mono text-ink">TradeUp2026!</code>. Try{" "}
-          <button
-            type="button"
-            onClick={() => {
-              setIdentifier("joan.obi@live.unilag.edu.ng");
-              setPassword("TradeUp2026!");
-            }}
-            className="cursor-pointer font-mono text-ink underline underline-offset-2"
-          >
-            joan.obi@live.unilag.edu.ng
-          </button>{" "}
-          for a student view, or{" "}
-          <button
-            type="button"
-            onClick={() => {
-              setIdentifier("okiki.adebowale@live.unilag.edu.ng");
-              setPassword("TradeUp2026!");
-            }}
-            className="cursor-pointer font-mono text-ink underline underline-offset-2"
-          >
-            okiki.adebowale@live.unilag.edu.ng
-          </button>{" "}
-          for the moderator view.
-        </p>
-      </div>
-
       <p className="mt-6 text-sm text-muted">
         No account yet?{" "}
         <Link to="/join" className="cursor-pointer font-semibold text-ink underline underline-offset-2">

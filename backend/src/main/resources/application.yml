@@ -90,6 +90,10 @@ tradeup:
   security:
     # Must be at least 32 characters. Set it in backend/.env.
     jwt-secret: ${TRADEUP_JWT_SECRET}
+    # Comma-separated emails granted moderator rights at startup. There is no
+    # shared moderator account: each person registers normally and is promoted
+    # by being named here.
+    admin-emails: ${TRADEUP_ADMIN_EMAILS:}
     token-validity: P7D
     issuer: tradeup
 
@@ -106,6 +110,10 @@ tradeup:
     # trades. It only runs when the users table is empty, so it is safe to leave
     # on — but turn it off for anything resembling production.
     enabled: ${TRADEUP_SEED_ENABLED:true}
+    # Password given to the seeded accounts. Leave unset and a random one is
+    # generated and logged at startup, so this repository never contains a
+    # password that works against a real deployment.
+    password: ${TRADEUP_SEED_PASSWORD:}
 
 ---
 # Offline fallback: an embedded file database, no network and no credentials.

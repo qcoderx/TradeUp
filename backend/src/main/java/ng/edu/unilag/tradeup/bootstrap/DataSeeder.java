@@ -9,7 +9,6 @@ import ng.edu.unilag.tradeup.domain.Conversation;
 import ng.edu.unilag.tradeup.domain.Listing;
 import ng.edu.unilag.tradeup.domain.Offer;
 import ng.edu.unilag.tradeup.domain.Report;
-import ng.edu.unilag.tradeup.domain.Role;
 import ng.edu.unilag.tradeup.domain.SavedListing;
 import ng.edu.unilag.tradeup.domain.TradeIntent;
 import ng.edu.unilag.tradeup.domain.User;
@@ -23,6 +22,7 @@ import ng.edu.unilag.tradeup.service.ReferenceGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,13 +41,21 @@ import org.springframework.transaction.annotation.Transactional;
  * duplicates anything.
  */
 @Component
+@org.springframework.core.annotation.Order(1)
 @ConditionalOnProperty(name = "tradeup.seed.enabled", havingValue = "true", matchIfMissing = false)
 public class DataSeeder implements ApplicationRunner {
 
     private static final Logger log = LoggerFactory.getLogger(DataSeeder.class);
 
-    /** Development only. The README says so, and so does the sign-in screen. */
-    private static final String DEMO_PASSWORD = "TradeUp2026!";
+    /**
+     * The password given to every seeded account.
+     *
+     * <p>Set {@code TRADEUP_SEED_PASSWORD} to choose it. When it is not set a
+     * random one is generated and logged once at startup — which means a
+     * checkout of this repository can never be used to sign in to somebody
+     * else's deployment, because no password is written down here.
+     */
+    private final String demoPassword;
 
     private final UserRepository userRepository;
     private final ListingRepository listingRepository;
@@ -66,7 +74,8 @@ public class DataSeeder implements ApplicationRunner {
             ReportRepository reportRepository,
             SavedListingRepository savedListingRepository,
             PasswordEncoder passwordEncoder,
-            ReferenceGenerator referenceGenerator) {
+            ReferenceGenerator referenceGenerator,
+            @Value("${tradeup.seed.password:}") String configuredPassword) {
         this.userRepository = userRepository;
         this.listingRepository = listingRepository;
         this.conversationRepository = conversationRepository;
@@ -75,6 +84,14 @@ public class DataSeeder implements ApplicationRunner {
         this.savedListingRepository = savedListingRepository;
         this.passwordEncoder = passwordEncoder;
         this.referenceGenerator = referenceGenerator;
+        this.demoPassword = configuredPassword.isBlank() ? randomPassword() : configuredPassword;
+    }
+
+    /** A throwaway password with enough entropy that guessing it is hopeless. */
+    private static String randomPassword() {
+        byte[] bytes = new byte[18];
+        new java.security.SecureRandom().nextBytes(bytes);
+        return java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
     @Override
@@ -92,10 +109,11 @@ public class DataSeeder implements ApplicationRunner {
         seedActivity(students, listings);
 
         log.info(
-                "Seeded {} students and {} listings. Sign in with any listed email and the password {}.",
+                "Seeded {} students and {} listings. Sign in with any seeded email and the password: {}",
                 students.size(),
                 listings.size(),
-                DEMO_PASSWORD);
+                demoPassword);
+        log.info("Moderator rights are granted separately, through tradeup.security.admin-emails.");
     }
 
     // ---------------------------------------------------------------------
@@ -136,14 +154,10 @@ public class DataSeeder implements ApplicationRunner {
         Map<String, User> students = new java.util.LinkedHashMap<>();
         for (Seed seed : seeds) {
             User user = new User(
-                    seed.email(), seed.matric(), seed.name(), passwordEncoder.encode(DEMO_PASSWORD), seed.department());
+                    seed.email(), seed.matric(), seed.name(), passwordEncoder.encode(demoPassword), seed.department());
             user.setCampusLocation(seed.hall());
             user.setBio(seed.bio());
 
-            // The team captain moderates the board.
-            if ("okiki".equals(seed.key())) {
-                user.setRole(Role.ADMIN);
-            }
             students.put(seed.key(), userRepository.save(user));
         }
         return students;

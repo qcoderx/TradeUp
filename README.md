@@ -89,15 +89,30 @@ nothing to configure.
 
 ### 4. Sign in
 
-Every seeded account uses the password `TradeUp2026!`.
+On first run the seeder creates the eleven Group 15 accounts and **prints the password it
+generated** to the console:
 
-| Account | Sees |
-|---|---|
-| `joan.obi@live.unilag.edu.ng` | A normal student: listings, an offer waiting, unread messages |
-| `okiki.adebowale@live.unilag.edu.ng` | The same, plus the **moderation queue** and the data exports |
+```
+Seeded 11 students and 16 listings. Sign in with any seeded email and the password: <generated>
+```
 
-> These credentials are development seed data only. Set `TRADEUP_SEED_ENABLED=false` and a
-> strong `TRADEUP_JWT_SECRET` before this goes anywhere near a real deployment.
+Pin it to something you choose with `TRADEUP_SEED_PASSWORD` in `.env`. No password is written
+into this repository, so a checkout can never be used to sign in to somebody else's deployment.
+
+Any seeded address works, for example `joan.obi@live.unilag.edu.ng`.
+
+### Becoming a moderator
+
+There is no shared moderator account. Register normally, then name yourself:
+
+```
+TRADEUP_ADMIN_EMAILS=your.name@live.unilag.edu.ng
+```
+
+You are promoted the next time the application starts, and demoted again if your address is
+removed — so the environment variable stays the single source of truth. Moderation covers the
+report queue and the CSV/JSON exports, and those exports contain real names and matric numbers,
+which is exactly why it is not something you can sign up for.
 
 ### A note on secrets
 
@@ -176,6 +191,7 @@ TRADEUP_DB_PASSWORD     your_db_password
 TRADEUP_JWT_SECRET      (let Render generate one)
 TRADEUP_CORS_ORIGINS    https://your-frontend-url
 TRADEUP_SEED_ENABLED    false
+TRADEUP_ADMIN_EMAILS    your.name@live.unilag.edu.ng
 ```
 
 The app binds `$PORT`, which Render sets, and falls back to 8080 locally. Because
