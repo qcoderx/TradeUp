@@ -1,0 +1,31 @@
+{
+  "name": "tradeup-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "TradeUp — A Student Marketplace for Smarter Living. UNILAG COS202 Group 15.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "tsc --noEmit",
+    "optimize:assets": "node scripts/optimize-assets.mjs"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.0",
+    "framer-motion": "^12.0.0",
+    "lucide-react": "^0.469.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "sharp": "^0.34.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^7.0.0"
+  }
+}

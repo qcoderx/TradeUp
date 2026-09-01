@@ -1,0 +1,30 @@
+# Tests run against a throwaway in-memory database with no seed data, so each
+# class starts from a known-empty marketplace.
+spring:
+  datasource:
+    url: jdbc:h2:mem:tradeup-test;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+
+tradeup:
+  security:
+    jwt-secret: test-only-signing-key-that-is-long-enough-for-hs256
+    token-validity: PT1H
+    issuer: tradeup-test
+  cors:
+    allowed-origins: http://localhost:5173
+  storage:
+    upload-dir: ./target/test-uploads
+    archive-dir: ./target/test-archives
+  seed:
+    enabled: false
+
+logging:
+  level:
+    root: WARN
+    ng.edu.unilag.tradeup: INFO

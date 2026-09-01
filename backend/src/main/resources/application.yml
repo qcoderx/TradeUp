@@ -1,0 +1,107 @@
+spring:
+  application:
+    name: tradeup
+
+  # Embedded JDBC database, written to ./data so the marketplace survives a restart.
+  # This is the proposal's Phase 2 stretch goal; see the mysql profile below for the
+  # MySQL alternative.
+  datasource:
+    url: jdbc:h2:file:./data/tradeup;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 25
+        order_inserts: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 30MB
+
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+
+  threads:
+    virtual:
+      # Java 21 virtual threads: one per request, so a slow client cannot tie up a
+      # platform thread that another student is waiting on.
+      enabled: true
+
+server:
+  port: 8080
+  error:
+    include-message: never
+    include-stacktrace: never
+  compression:
+    enabled: true
+    mime-types: application/json,text/html,text/css,application/javascript
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    ng.edu.unilag.tradeup: INFO
+    org.hibernate.SQL: WARN
+
+tradeup:
+  security:
+    # Override this in any real deployment, e.g. with the TRADEUP_SECURITY_JWT_SECRET
+    # environment variable. It must be at least 32 characters.
+    jwt-secret: ${TRADEUP_JWT_SECRET:tradeup-unilag-cos202-group15-development-signing-key}
+    token-validity: P7D
+    issuer: tradeup
+
+  cors:
+    allowed-origins: http://localhost:5173,http://localhost:4173,http://127.0.0.1:5173
+
+  storage:
+    upload-dir: ./data/uploads
+    archive-dir: ./data/archives
+    public-prefix: /uploads
+
+  seed:
+    # Fills an empty database with the team, a catalogue and some completed trades
+    # so the app has something to show on first run.
+    enabled: true
+
+---
+# Run with -Dspring.profiles.active=mysql once a MySQL server is available.
+spring:
+  config:
+    activate:
+      on-profile: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/tradeup?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update

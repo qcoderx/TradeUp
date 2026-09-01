@@ -1,1 +1,181 @@
 # TradeUp
+
+**A Student Marketplace for Smarter Living**
+
+University of Lagos · COS202 Computer Programming II · **Group 15**
+Aligned to **UN Sustainable Development Goal 12 — Responsible Consumption and Production**
+
+Every semester students accumulate textbooks, calculators, lab coats and hostel kit they
+have finished with, while other students — especially first years and those on tight
+budgets — struggle to afford the same things new. Both halves of that problem sit within
+walking distance of each other on the Akoka campus, and nothing connects them.
+
+TradeUp is a marketplace built only for this campus, so an item finishing its life with one
+student can start a second life with another — and so that the saving is **visible**, not
+invisible.
+
+---
+
+## The team
+
+| Matric | Name | Department | Role |
+|---|---|---|---|
+| 240817017 | Adebowale Okiki David | Data Science | Team Captain |
+| 240806153 | Bakare Deborah Oluwatosin | Mathematics | Assistant Team Captain |
+| 252605503 | Bello Trust Osereme | Mathematics | Member |
+| 252609502 | Fatoyinbo Victor Ayomikun | Data Science | Member |
+| 240805034 | Obi Omasirichukwu Joan | Computer Science | Member |
+| 240313022 | Adebayo Mistura Temitope | Science Education | Member |
+| 240805036 | Adeniran Abdurrahman Adebolaji | Computer Science | Member |
+| 240817008 | Lasisi Quadri Toluwalase | Data Science | Member |
+| 240805111 | Harrison Blessing Idoreyin | Computer Science | Member |
+| 252609512 | Olawunmi Afolabi Olajumoke | Data Science | Member |
+| 240817013 | Salami Abdulmalik Ayobami | Data Science | Member |
+
+The roster is served from the API (`GET /api/team`) and rendered at `/team`, so the names on
+the site and the names in the proposal come from one place.
+
+---
+
+## Running it
+
+You need **JDK 21+** and **Node 20+**. Nothing else — the database is embedded and the Maven
+wrapper downloads Maven on first use.
+
+### 1. Start the Java API
+
+```bash
+cd backend
+./mvnw spring-boot:run          # Windows: mvnw.cmd spring-boot:run
+```
+
+It comes up on **http://localhost:8080** and, on an empty database, seeds itself with the
+eleven Group 15 accounts, sixteen listings, some completed trades, a couple of live
+conversations, a pending offer and one open moderation report.
+
+### 2. Start the interface
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173**. The dev server proxies `/api` to the backend, so there is
+nothing to configure.
+
+### 3. Sign in
+
+Every seeded account uses the password `TradeUp2026!`.
+
+| Account | Sees |
+|---|---|
+| `joan.obi@live.unilag.edu.ng` | A normal student: listings, an offer waiting, unread messages |
+| `okiki.adebowale@live.unilag.edu.ng` | The same, plus the **moderation queue** and the data exports |
+
+> These credentials are development seed data only. Set `tradeup.seed.enabled: false`
+> and a real `TRADEUP_JWT_SECRET` before this goes anywhere near a real deployment.
+
+---
+
+## What is in it
+
+**For students** — register with a matric number, list an item for sale or swap with up to
+six photos, browse with keyword, category, condition, intent and price filters, save items,
+message a lister, make cash or swap offers, and see your own impact on your dashboard.
+
+**For moderators** — a report queue with uphold and dismiss decisions, and one-click CSV and
+JSON exports of the whole catalogue.
+
+**Throughout** — the SDG 12 figures on the landing page and at `/impact` are computed from
+real completed trades, not hard-coded.
+
+### The trade ticket
+
+Every listing is drawn as a perforated ticket rather than a product card, with a torn stub
+carrying its reference code, **which owner this is** (`3rd owner`), and the CO₂e its reuse
+saves. A second-hand item is an object with a history, and the interface says so.
+
+---
+
+## How it maps to the course requirements
+
+The proposal promised a demonstration of core Java. Each requirement is met by something the
+application genuinely needs, not by a bolted-on example.
+
+| Requirement | Where it lives |
+|---|---|
+| **Object-oriented design** | `domain/` — `Listing` owns its own lifecycle rules, so no caller can drive it into an illegal state. `BaseEntity` shares identity and audit stamps by inheritance. `Offer` uses static factories to make an invalid offer unconstructable. |
+| **Collections** | `ImpactService` groups trades with `EnumMap`; `ListingService` folds filters over a `List<Specification>`; `Conversation` counts unread messages with the Stream API; `ListingSpecifications` builds predicates from `Collection<Condition>`. |
+| **Exception handling** | `web/error/` — a small hierarchy under `AppException`, each carrying its own HTTP status and a sentence written for a student. `GlobalExceptionHandler` turns any of them into one JSON shape. |
+| **File I/O** | `ArchiveService` writes timestamped CSV and JSON with `java.nio.file`, try-with-resources, and correct CSV quoting. This is Phase 1 of the proposal, kept alongside the database rather than replaced by it. |
+| **Database connectivity** | Spring Data JPA over an embedded H2 file database via JDBC (Phase 2). A `mysql` profile is included for when a server is available. |
+| **CRUD** | Create, browse/search, update and delete listings — plus the reserve → complete lifecycle that a real handover needs. |
+
+### Deviation from the proposal, stated plainly
+
+The proposal specified a **Swing or JavaFX desktop application**. This implementation keeps
+every Java concept it promised and moves the interface to the browser, so the marketplace
+opens on the phone a student already carries rather than only on a lab machine. The Java is
+the same; the presentation layer is HTTP instead of Swing.
+
+---
+
+## Layout
+
+```
+backend/    Java 21 · Spring Boot 3.5 · Spring Security · JPA · H2
+  domain/       entities, and the rules that belong to them
+  repository/   Spring Data interfaces + the search Specifications
+  service/      business logic, file exports, impact arithmetic
+  web/          controllers, DTO records, the error handler
+  security/     JWT issuing, the auth filter, current-user access
+  bootstrap/    the seed data
+frontend/   React 19 · TypeScript · Tailwind 4 · Vite
+  components/   the trade ticket, navbar, modal, UI primitives
+  pages/        landing, browse, listing, sell, dashboard, inbox, impact, team, moderation
+  lib/          typed API client, auth and theme context, formatting
+tools/      one-off asset generation
+```
+
+## Testing
+
+```bash
+cd backend && ./mvnw test
+```
+
+29 tests: the listing lifecycle unit-tested directly on the entity, plus end-to-end HTTP
+tests covering registration, validation, ownership rules, the offer flow, private messaging,
+moderation access control, and that a completed trade actually moves the impact figures.
+
+## API documentation
+
+With the backend running, the full interactive API is at
+**http://localhost:8080/swagger-ui.html**.
+
+---
+
+## Design
+
+The identity is **"Adire & Ticket"**. The ground is Yoruba *adire* indigo — the resist-dyed
+cloth this campus grew up around — rather than the usual marketplace blue; marigold marks
+anything moving up, and leaf green marks a completed trade. Type is Bricolage Grotesque over
+Instrument Sans, with JetBrains Mono for reference codes and provenance stamps.
+
+The interface supports light and dark themes, respects `prefers-reduced-motion`, keeps every
+control at a 44px touch target, and is responsive from 375px up.
+
+### Regenerating the imagery
+
+The listing photography, hero texture and social card were generated once with OpenAI's
+image model and are committed to the repository — you do **not** need an API key to run the
+project. To regenerate them:
+
+```bash
+OPENAI_API_KEY=sk-... node tools/generate-assets.mjs   # generate
+cd frontend && npm run optimize:assets                 # resize + convert to WebP
+```
+
+The optimiser takes the raw set from ~23 MB down to ~370 KB. The brand mark itself is
+hand-authored SVG (`frontend/public/favicon.svg`), because a logo is exact geometry that has
+to stay crisp at 16px.

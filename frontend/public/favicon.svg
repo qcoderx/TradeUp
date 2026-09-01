@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="TradeUp">
+  <rect width="48" height="48" rx="11" fill="#16204A"/>
+  <g fill="none" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Trading up: the leading arrow rises. -->
+    <g stroke="#E9A13B">
+      <path d="M13 28 L30 11"/>
+      <path d="M21.5 11 L30 11 L30 19.5"/>
+    </g>
+    <!-- And something comes back the other way. -->
+    <g stroke="#F7F5F0">
+      <path d="M35 20 L18 37"/>
+      <path d="M18 28.5 L18 37 L26.5 37"/>
+    </g>
+  </g>
+</svg>
