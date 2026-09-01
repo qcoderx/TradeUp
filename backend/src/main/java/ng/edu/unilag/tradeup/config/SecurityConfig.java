@@ -70,6 +70,14 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/actuator/health")
                         .permitAll()
+                        // The service root, so an uptime monitor keeping this
+                        // instance awake gets a 200 rather than a 401. HEAD is
+                        // listed explicitly because that is what most uptime
+                        // services actually send.
+                        .requestMatchers(HttpMethod.GET, "/", "/ping")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.HEAD, "/", "/ping")
+                        .permitAll()
                         // Moderation is staff only.
                         .requestMatchers("/api/admin/**")
                         .hasRole("ADMIN")

@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import org.hibernate.annotations.BatchSize;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -75,10 +76,16 @@ public class Listing extends BaseEntity {
     @Column(length = 80)
     private String pickupLocation;
 
+    /**
+     * Batched deliberately. Without this Hibernate fetches the photos for each
+     * listing in its own statement, so a page of 24 costs 24 extra round trips
+     * to the database. The batch turns them into a single IN query.
+     */
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "listing_images", joinColumns = @JoinColumn(name = "listing_id"))
     @OrderColumn(name = "position")
     @Column(name = "url", length = 400)
+    @BatchSize(size = 64)
     private List<String> imageUrls = new ArrayList<>();
 
     /**

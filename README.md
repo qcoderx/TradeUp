@@ -229,6 +229,21 @@ shows up in the console as a CORS error rather than as anything obviously wrong 
 to `index.html` any deep link or page refresh on `/browse` asks the host for a file that does
 not exist and gets a 404.
 
+### Keeping a free instance awake
+
+A free Render service sleeps after 15 minutes without traffic and takes about a minute to come
+back. Point an uptime monitor at either of these, every 10 minutes:
+
+```
+https://your-api.onrender.com/          -> {"service":"TradeUp API","status":"ok",...}
+https://your-api.onrender.com/ping      -> the same
+https://your-api.onrender.com/actuator/health
+```
+
+All three are public and answer GET and HEAD. `/` and `/ping` touch no database at all, so the
+ping costs nothing and keeps answering even if the database is unreachable — which is the right
+behaviour, since what the monitor is asking is whether the web tier is up.
+
 ### Two things to know before you rely on it
 
 **Uploaded photos do not survive a restart.** `StorageService` writes to local disk, and Render's

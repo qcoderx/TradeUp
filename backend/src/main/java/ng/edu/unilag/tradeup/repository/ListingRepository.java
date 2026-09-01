@@ -23,10 +23,24 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ListingRepository extends JpaRepository<Listing, Long>, JpaSpecificationExecutor<Listing> {
 
+    /**
+     * The browse query, with the owner joined in.
+     *
+     * <p>Overriding this is the whole point: the inherited method leaves the
+     * owner lazy, so rendering a page of cards triggered one extra statement per
+     * listing. Only the ToOne is joined here — pulling a collection into a
+     * paginated query would make Hibernate page in memory instead of in SQL.
+     */
+    @Override
+    @EntityGraph(attributePaths = {"owner"})
+    Page<Listing> findAll(org.springframework.data.jpa.domain.Specification<Listing> spec, Pageable pageable);
+
     @EntityGraph(attributePaths = {"owner", "imageUrls"})
     Optional<Listing> findByReferenceIgnoreCase(String reference);
 
-    @EntityGraph(attributePaths = {"owner", "imageUrls"})
+    // Paginated, so the collection stays out of the graph and is batch-fetched
+    // instead; joining it here would make Hibernate paginate in memory.
+    @EntityGraph(attributePaths = {"owner"})
     Page<Listing> findByOwnerIdOrderByCreatedAtDesc(Long ownerId, Pageable pageable);
 
     List<Listing> findByOwnerIdAndStatus(Long ownerId, ListingStatus status);
@@ -36,11 +50,11 @@ public interface ListingRepository extends JpaRepository<Listing, Long>, JpaSpec
     long countByStatus(ListingStatus status);
 
     /** Fresh arrivals for the landing page, newest first. */
-    @EntityGraph(attributePaths = {"owner", "imageUrls"})
+    @EntityGraph(attributePaths = {"owner"})
     List<Listing> findByStatusOrderByCreatedAtDesc(ListingStatus status, Pageable pageable);
 
     /** Most-viewed available items, for the featured rail. */
-    @EntityGraph(attributePaths = {"owner", "imageUrls"})
+    @EntityGraph(attributePaths = {"owner"})
     List<Listing> findByStatusOrderByViewCountDesc(ListingStatus status, Pageable pageable);
 
     /**
@@ -68,7 +82,7 @@ public interface ListingRepository extends JpaRepository<Listing, Long>, JpaSpec
     long sumPriceKoboByStatus(@Param("status") ListingStatus status);
 
     /** Similar items on the detail page: same category, excluding the item itself. */
-    @EntityGraph(attributePaths = {"owner", "imageUrls"})
+    @EntityGraph(attributePaths = {"owner"})
     List<Listing> findByCategoryAndStatusAndIdNot(
             Category category, ListingStatus status, Long excludedId, Pageable pageable);
 }
