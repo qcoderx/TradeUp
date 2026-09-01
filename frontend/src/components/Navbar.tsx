@@ -22,6 +22,18 @@ import { cx } from "../lib/format";
 import { Logo } from "./Logo";
 import { Avatar } from "./ui";
 
+/**
+ * The public sections, in one place.
+ *
+ * <p>The desktop bar and the mobile sheet both render from this, so a link can
+ * no longer appear in one and be forgotten in the other.
+ */
+const PRIMARY_LINKS = [
+  { to: "/browse", label: "Browse" },
+  { to: "/impact", label: "Impact" },
+  { to: "/team", label: "Team" },
+];
+
 export function Navbar() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
@@ -97,28 +109,20 @@ export function Navbar() {
         </form>
 
         <div className="ml-auto flex items-center gap-1.5">
-          <NavLink
-            to="/browse"
-            className={({ isActive }) =>
-              cx(
-                "hidden cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold transition-colors duration-200 lg:block",
-                isActive ? "text-ink" : "text-muted hover:text-ink"
-              )
-            }
-          >
-            Browse
-          </NavLink>
-          <NavLink
-            to="/impact"
-            className={({ isActive }) =>
-              cx(
-                "hidden cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold transition-colors duration-200 lg:block",
-                isActive ? "text-ink" : "text-muted hover:text-ink"
-              )
-            }
-          >
-            Impact
-          </NavLink>
+          {PRIMARY_LINKS.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) =>
+                cx(
+                  "hidden cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold transition-colors duration-200 lg:block",
+                  isActive ? "text-ink" : "text-muted hover:text-ink"
+                )
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
 
           <ThemeToggle />
 
@@ -242,9 +246,11 @@ export function Navbar() {
             </div>
           </form>
           <div className="flex flex-col">
-            <MobileLink to="/browse">Browse</MobileLink>
-            <MobileLink to="/impact">Impact</MobileLink>
-            <MobileLink to="/team">The team</MobileLink>
+            {PRIMARY_LINKS.map((link) => (
+              <MobileLink key={link.to} to={link.to}>
+                {link.label}
+              </MobileLink>
+            ))}
             {user ? (
               <>
                 <MobileLink to="/sell">List an item</MobileLink>
