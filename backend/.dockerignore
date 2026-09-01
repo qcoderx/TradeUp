@@ -1,0 +1,9 @@
+# Never let local state or secrets into the build context.
+.env
+data/
+target/
+
+# Not needed to build the jar.
+*.md
+.git
+.gitignore

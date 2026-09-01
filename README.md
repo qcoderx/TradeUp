@@ -152,6 +152,52 @@ the same; the presentation layer is HTTP instead of Swing.
 
 ---
 
+## Deploying to Render
+
+Render has **no native Java runtime** — JVM services deploy from a Dockerfile. `backend/Dockerfile`
+and `render.yaml` are set up for this.
+
+**Easiest path:** Render Dashboard → New → Blueprint → point at this repo. `render.yaml` creates
+the service and prompts for the secrets. Or configure by hand:
+
+| Setting | Value |
+|---|---|
+| Language | **Docker** |
+| Root Directory | `backend` |
+| Dockerfile Path | `./Dockerfile` |
+| Health Check Path | `/actuator/health` |
+
+Then set these environment variables in the Render dashboard — never in the repo:
+
+```
+TRADEUP_DB_URL          jdbc:postgresql://HOST/neondb?sslmode=require
+TRADEUP_DB_USER         your_db_user
+TRADEUP_DB_PASSWORD     your_db_password
+TRADEUP_JWT_SECRET      (let Render generate one)
+TRADEUP_CORS_ORIGINS    https://your-frontend-url
+TRADEUP_SEED_ENABLED    false
+```
+
+The app binds `$PORT`, which Render sets, and falls back to 8080 locally. Because
+`spring.config.import` marks the `.env` as optional, the same configuration works from real
+environment variables with no file present.
+
+### Two things to know before you rely on it
+
+**Uploaded photos do not survive a restart.** `StorageService` writes to local disk, and Render's
+filesystem is ephemeral — free instances cannot mount a persistent disk at all. Listing photos
+uploaded through the site vanish on every redeploy, restart, or spin-down. The seeded imagery is
+fine because it is served by the frontend as a static asset. To fix properly, either attach a
+Render persistent disk on a paid instance and point `tradeup.storage.upload-dir` at it, or move
+uploads to object storage. The same applies to the CSV/JSON exports in `ArchiveService` — download
+them promptly rather than treating them as durable.
+
+**The free tier sleeps.** Render spins a free service down after 15 minutes without traffic, and
+waking it takes about a minute on top of the roughly 20 seconds Spring Boot needs to start. Fine
+for a demo you can warm up beforehand; worth knowing before a live presentation.
+
+---
+
 ## Layout
 
 ```

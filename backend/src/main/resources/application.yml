@@ -58,7 +58,10 @@ spring:
       enabled: true
 
 server:
-  port: 8080
+  # Render (and most hosts) assign the port at runtime through PORT and require
+  # the process to bind it. The 8080 default keeps local development unchanged.
+  port: ${PORT:8080}
+  address: 0.0.0.0
   error:
     include-message: never
     include-stacktrace: never

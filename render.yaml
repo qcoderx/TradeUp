@@ -1,0 +1,45 @@
+# Render blueprint for the TradeUp API.
+#
+# Render has no native Java runtime, so this deploys from backend/Dockerfile.
+# Every secret is marked `sync: false`, which means Render prompts for it and
+# stores it on the service — the values are never written into this repository.
+#
+# To use: Render Dashboard -> New -> Blueprint -> point it at this repo.
+
+services:
+  - type: web
+    name: tradeup-api
+    runtime: docker
+    plan: free
+    region: oregon
+
+    # The service lives in a subdirectory of the repo.
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+
+    # Render restarts the service if this stops answering.
+    healthCheckPath: /actuator/health
+
+    envVars:
+      # --- Database (set these in the Render dashboard) ---
+      - key: TRADEUP_DB_URL
+        sync: false
+      - key: TRADEUP_DB_USER
+        sync: false
+      - key: TRADEUP_DB_PASSWORD
+        sync: false
+
+      # --- Auth ---
+      # Render generates a strong value on first deploy and keeps it stable.
+      - key: TRADEUP_JWT_SECRET
+        generateValue: true
+
+      # --- Where the frontend is served from ---
+      # Comma-separated. Must match the deployed site exactly, scheme included.
+      - key: TRADEUP_CORS_ORIGINS
+        sync: false
+
+      # The catalogue is already seeded, so do not write sample data again.
+      - key: TRADEUP_SEED_ENABLED
+        value: "false"
