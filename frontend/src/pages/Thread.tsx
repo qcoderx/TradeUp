@@ -132,7 +132,7 @@ export function Thread() {
       {/* Composer */}
       <form onSubmit={send} className="sticky bottom-0 flex flex-col gap-2 bg-paper pt-3 pb-4">
         {sendError && (
-          <p role="alert" className="rounded-lg bg-clay-soft px-3.5 py-2 text-sm text-clay">
+          <p role="alert" className="rounded-lg bg-red-soft px-3.5 py-2 text-sm text-red">
             {sendError}
           </p>
         )}

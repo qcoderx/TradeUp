@@ -90,7 +90,7 @@ export function Browse() {
         <h1 className="mt-2 text-[clamp(1.9rem,4vw,2.75rem)]">
           {q ? (
             <>
-              Results for <span className="text-marigold">{q}</span>
+              Results for <span className="text-green">{q}</span>
             </>
           ) : (
             "Everything on offer"
@@ -168,7 +168,7 @@ export function Browse() {
                               : [...conditions, option.name]
                           )
                         }
-                        className="h-4 w-4 cursor-pointer accent-[var(--tu-leaf)]"
+                        className="h-4 w-4 cursor-pointer accent-[var(--tu-green)]"
                       />
                       {option.label}
                     </label>
@@ -228,7 +228,7 @@ export function Browse() {
               <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
               Filters
               {activeCount > 0 && (
-                <span className="ml-0.5 rounded-full bg-leaf px-1.5 font-mono text-[0.625rem] text-white">
+                <span className="ml-0.5 rounded-full bg-green px-1.5 font-mono text-[0.625rem] text-white">
                   {activeCount}
                 </span>
               )}

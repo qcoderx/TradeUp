@@ -10,15 +10,15 @@ export function ImpactPage() {
 
   return (
     <>
-      <section className="adire">
+      <section className="hero-panel">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-24">
-          <p className="font-mono text-[0.6875rem] tracking-[0.16em] text-marigold-bright uppercase">
+          <p className="font-mono text-[0.6875rem] tracking-[0.16em] text-green uppercase">
             Sustainable Development Goal 12
           </p>
           <h1 className="mt-5 max-w-3xl text-[clamp(2.2rem,5.4vw,3.5rem)] leading-[1.02]">
             Responsible consumption, counted one item at a time
           </h1>
-          <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-white/78">
+          <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-muted">
             Reuse is usually invisible. Nothing gets weighed and nobody is told what was avoided. These
             figures are the opposite: each one is worked out on the server from the trades that actually
             completed on this board.
@@ -128,7 +128,7 @@ function StatTile({
 }) {
   return (
     <div className="bg-surface p-7">
-      <span className="inline-flex text-leaf">{icon}</span>
+      <span className="inline-flex text-green">{icon}</span>
       <dd className="tabular mt-3 font-display text-[2rem] leading-none font-bold text-ink">{value}</dd>
       <dt className="mt-2 text-sm font-medium text-ink">{label}</dt>
       <p className="mt-1.5 text-xs leading-snug text-muted">{note}</p>
@@ -178,7 +178,7 @@ function CategoryChart({ rows }: { rows: CategoryImpact[] }) {
                 <div className="flex items-baseline justify-between gap-4">
                   <Link
                     to={`/browse?category=${row.slug}`}
-                    className="cursor-pointer text-sm font-medium text-ink transition-colors duration-200 hover:text-leaf"
+                    className="cursor-pointer text-sm font-medium text-ink transition-colors duration-200 hover:text-green"
                   >
                     {row.label}
                   </Link>
@@ -198,7 +198,7 @@ function CategoryChart({ rows }: { rows: CategoryImpact[] }) {
                   aria-label={`${row.label}: ${row.co2SavedKg.toFixed(1)} kilograms of CO2e from ${row.itemsRehomed} items`}
                 >
                   <div
-                    className="h-full rounded-full bg-leaf-bright transition-[width] duration-500 ease-out"
+                    className="h-full rounded-full bg-green-bright transition-[width] duration-500 ease-out"
                     style={{ width: `${Math.max(share, 1.5)}%` }}
                   />
                 </div>

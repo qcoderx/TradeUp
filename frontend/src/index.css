@@ -1,16 +1,24 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   TradeUp design system — "Adire & Ticket"
+   TradeUp design system — University of Lagos crest
 
-   The palette is built on Yoruba adire indigo, the resist-dyed cloth this
-   campus grew up around, rather than the usual marketplace blue. Marigold is
-   the accent that marks anything moving up; leaf green marks a completed
-   trade. Paper is the ground, because everything here is second-hand and the
-   surface should feel like it has been handled.
+   Three colours, taken straight off the university crest and measured from the
+   artwork rather than guessed:
 
-   Every colour is declared twice: once on :root for light, once under .dark.
-   Components only ever refer to the semantic name, never the raw hex.
+     blue   #025AA4   the dominant field
+     green  #019646   the two flanks
+     red    #EB1B23   the crown
+
+   White is the ground. Blue carries the brand and every primary action, green
+   carries anything positive — a completed trade, CO2 saved, an item on offer —
+   and red is held back for warnings, errors and the crest rule, so it still
+   means something when it appears.
+
+   Each hue has two steps for a reason. The crest values are vivid but light:
+   #019646 sits at 3.85:1 on white and #EB1B23 at 4.46:1, both under the 4.5:1
+   AA threshold. So the crest value is the FILL (-bright) and a darkened value
+   is the TEXT. Blue needs no such split; it already measures 7:1.
    ========================================================================== */
 
 @theme {
@@ -31,25 +39,22 @@
   --color-muted: var(--tu-muted);
   --color-faint: var(--tu-faint);
 
-  --color-indigo: var(--tu-indigo);
-  --color-indigo-deep: var(--tu-indigo-deep);
-  --color-indigo-soft: var(--tu-indigo-soft);
-  --color-on-indigo: var(--tu-on-indigo);
+  --color-blue: var(--tu-blue);
+  --color-blue-deep: var(--tu-blue-deep);
+  --color-blue-soft: var(--tu-blue-soft);
+  --color-on-blue: var(--tu-on-blue);
 
-  --color-marigold: var(--tu-marigold);
-  --color-marigold-bright: var(--tu-marigold-bright);
-  --color-marigold-soft: var(--tu-marigold-soft);
+  --color-green: var(--tu-green);
+  --color-green-bright: var(--tu-green-bright);
+  --color-green-soft: var(--tu-green-soft);
 
-  --color-leaf: var(--tu-leaf);
-  --color-leaf-bright: var(--tu-leaf-bright);
-  --color-leaf-soft: var(--tu-leaf-soft);
-
-  --color-clay: var(--tu-clay);
-  --color-clay-soft: var(--tu-clay-soft);
+  --color-red: var(--tu-red);
+  --color-red-bright: var(--tu-red-bright);
+  --color-red-soft: var(--tu-red-soft);
 
   /* A single ramp for elevation keeps cards consistent across the app. */
-  --shadow-ticket: 0 1px 2px rgb(20 24 31 / 0.04), 0 8px 24px -12px rgb(20 24 31 / 0.18);
-  --shadow-lift: 0 2px 4px rgb(20 24 31 / 0.05), 0 18px 40px -20px rgb(20 24 31 / 0.26);
+  --shadow-ticket: 0 1px 2px rgb(15 27 42 / 0.05), 0 8px 24px -12px rgb(15 27 42 / 0.16);
+  --shadow-lift: 0 2px 4px rgb(15 27 42 / 0.06), 0 18px 40px -20px rgb(15 27 42 / 0.24);
   --shadow-inset-line: inset 0 0 0 1px var(--tu-line);
 
   --radius-ticket: 14px;
@@ -58,63 +63,60 @@
 :root {
   color-scheme: light;
 
-  --tu-paper: #f6f4ee;
+  --tu-paper: #ffffff;
   --tu-surface: #ffffff;
-  --tu-sunk: #ece8de;
-  --tu-line: #e3ddd0;
-  --tu-line-strong: #cec6b4;
+  --tu-sunk: #f1f5f9;
+  --tu-line: #e2e8f0;
+  --tu-line-strong: #cbd5e1;
 
-  --tu-ink: #141821;
-  --tu-muted: #55606f;
-  --tu-faint: #7d8899;
+  --tu-ink: #0f1b2a;
+  --tu-muted: #4a5a6e;
+  --tu-faint: #5f6e80;
 
-  --tu-indigo: #16204a;
-  --tu-indigo-deep: #0b1024;
-  --tu-indigo-soft: #eceffa;
-  --tu-on-indigo: #f6f4ee;
+  /* Crest blue measures 7:1 on white, so it needs no darker text variant. */
+  --tu-blue: #025aa4;
+  --tu-blue-deep: #013b6e;
+  --tu-blue-soft: #e8f1fa;
+  --tu-on-blue: #ffffff;
 
-  /* Marigold is darkened for text use; the bright tone is for fills only. */
-  --tu-marigold: #96600f;
-  --tu-marigold-bright: #e9a13b;
-  --tu-marigold-soft: #fbf0dc;
+  /* Crest green is the fill; the darker step is what text and buttons use. */
+  --tu-green: #017038;
+  --tu-green-bright: #019646;
+  --tu-green-soft: #e6f6ec;
 
-  --tu-leaf: #1a6b46;
-  --tu-leaf-bright: #2e9e6b;
-  --tu-leaf-soft: #e4f4eb;
-
-  --tu-clay: #a63a25;
-  --tu-clay-soft: #fbe9e5;
+  /* Same split for the crown red. */
+  --tu-red: #c4141b;
+  --tu-red-bright: #eb1b23;
+  --tu-red-soft: #fdecec;
 }
 
 .dark {
   color-scheme: dark;
 
-  --tu-paper: #0b1024;
-  --tu-surface: #141b33;
-  --tu-sunk: #090d1c;
-  --tu-line: #253052;
-  --tu-line-strong: #38456d;
+  --tu-paper: #0b1622;
+  --tu-surface: #132234;
+  --tu-sunk: #081018;
+  --tu-line: #1f3348;
+  --tu-line-strong: #2f4a63;
 
-  --tu-ink: #edeff7;
-  --tu-muted: #a7b0c7;
-  --tu-faint: #7b86a3;
+  --tu-ink: #e8eef5;
+  --tu-muted: #9fb0c2;
+  --tu-faint: #7b8ca0;
 
-  /* In dark mode indigo stops being the ground and becomes an accent. */
-  --tu-indigo: #7d90d8;
-  --tu-indigo-deep: #060916;
-  --tu-indigo-soft: #1b2444;
-  --tu-on-indigo: #f6f4ee;
+  /* On a dark ground the relationship inverts: the crest values become the
+     fills and each hue is lifted for text, so contrast holds either way. */
+  --tu-blue: #4d9fe0;
+  --tu-blue-deep: #04121f;
+  --tu-blue-soft: #102740;
+  --tu-on-blue: #ffffff;
 
-  --tu-marigold: #f0b155;
-  --tu-marigold-bright: #e9a13b;
-  --tu-marigold-soft: #33270f;
+  --tu-green: #35c97a;
+  --tu-green-bright: #019646;
+  --tu-green-soft: #0b2a1a;
 
-  --tu-leaf: #4ec48c;
-  --tu-leaf-bright: #2e9e6b;
-  --tu-leaf-soft: #0f2b1e;
-
-  --tu-clay: #f08b74;
-  --tu-clay-soft: #331410;
+  --tu-red: #ff7176;
+  --tu-red-bright: #eb1b23;
+  --tu-red-soft: #2e0f11;
 
   --shadow-ticket: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.7);
   --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.45), 0 18px 40px -20px rgb(0 0 0 / 0.8);
@@ -162,14 +164,14 @@
 
   /* One focus treatment everywhere, so keyboard users get a consistent signal. */
   :focus-visible {
-    outline: 2px solid var(--tu-marigold-bright);
+    outline: 2px solid var(--tu-blue);
     outline-offset: 2px;
     border-radius: 4px;
   }
 
   ::selection {
-    background: var(--tu-marigold-bright);
-    color: #14181f;
+    background: var(--tu-blue);
+    color: #ffffff;
   }
 
   /* Numerals line up in tables and on price rows. */
@@ -194,15 +196,51 @@
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--tu-muted);
+    color: var(--tu-blue);
+  }
+
+  /* -- The crest rule ---------------------------------------------------
+     The signature mark of the palette: the three crest colours as one thin
+     bar. Used to open the hero and to cap the footer, so the university's
+     own colours frame the page without shouting. */
+  .crest-rule {
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      var(--tu-blue) 0%,
+      var(--tu-blue) 46%,
+      var(--tu-green-bright) 46%,
+      var(--tu-green-bright) 78%,
+      var(--tu-red-bright) 78%,
+      var(--tu-red-bright) 100%
+    );
+  }
+
+  /* -- Hero panel --------------------------------------------------------
+     White, like the rest of the page. Depth comes from a soft wash of the
+     crest blue and green rather than from a dark slab, so the ground stays
+     white all the way down the page. */
+  .hero-panel {
+    position: relative;
+    background-color: var(--tu-paper);
+    isolation: isolate;
+  }
+
+  .hero-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60rem 30rem at 12% -10%, color-mix(in srgb, var(--tu-blue) 12%, transparent), transparent 70%),
+      radial-gradient(46rem 26rem at 92% 8%, color-mix(in srgb, var(--tu-green-bright) 10%, transparent), transparent 70%);
   }
 
   /* -- The trade ticket -------------------------------------------------
-     The signature element. A listing is a physical thing that has been
-     handed along, so its card is a ticket: a notch punched through the
-     left edge, a torn perforation down the stub, and a provenance line
-     set in the mono face. The notch is drawn with a radial gradient
-     rather than a pseudo-element so it stays put during a hover lift. */
+     A listing is a physical thing that has been handed along, so its card is
+     a ticket: a torn stub along the bottom carrying the reference code, which
+     owner this is, and what reusing it saves. */
   .ticket {
     position: relative;
     background-color: var(--tu-surface);
@@ -214,7 +252,7 @@
   }
 
   .ticket:hover {
-    box-shadow: var(--shadow-lift), inset 0 0 0 1px var(--tu-line-strong);
+    box-shadow: var(--shadow-lift), inset 0 0 0 1px var(--tu-blue);
     transform: translateY(-3px);
   }
 
@@ -272,18 +310,25 @@
     cursor: not-allowed;
   }
 
+  /* Primary is the crest blue: 7:1 against white text. */
   .btn-primary {
-    background-color: var(--tu-leaf);
+    background-color: var(--tu-blue);
     color: #ffffff;
   }
 
   .btn-primary:not(:disabled):hover {
-    background-color: var(--tu-leaf-bright);
+    background-color: var(--tu-blue-deep);
   }
 
-  .dark .btn-primary {
-    background-color: var(--tu-leaf-bright);
-    color: #05170e;
+  /* The positive action — listing, trading, anything that puts an item back
+     into circulation. Uses the darker green so white text clears AA. */
+  .btn-go {
+    background-color: var(--tu-green);
+    color: #ffffff;
+  }
+
+  .btn-go:not(:disabled):hover {
+    background-color: var(--tu-green-bright);
   }
 
   .btn-ink {
@@ -292,8 +337,8 @@
   }
 
   .btn-ink:not(:disabled):hover {
-    background-color: var(--tu-indigo);
-    color: var(--tu-on-indigo);
+    background-color: var(--tu-blue);
+    color: #ffffff;
   }
 
   .btn-outline {
@@ -303,8 +348,9 @@
   }
 
   .btn-outline:not(:disabled):hover {
-    background-color: var(--tu-sunk);
-    box-shadow: inset 0 0 0 1px var(--tu-ink);
+    background-color: var(--tu-blue-soft);
+    box-shadow: inset 0 0 0 1px var(--tu-blue);
+    color: var(--tu-blue);
   }
 
   .btn-quiet {
@@ -339,12 +385,12 @@
   .field:focus {
     outline: none;
     box-shadow:
-      inset 0 0 0 1px var(--tu-indigo),
-      0 0 0 3px var(--tu-indigo-soft);
+      inset 0 0 0 1px var(--tu-blue),
+      0 0 0 3px var(--tu-blue-soft);
   }
 
   .field[aria-invalid="true"] {
-    box-shadow: inset 0 0 0 1px var(--tu-clay);
+    box-shadow: inset 0 0 0 1px var(--tu-red);
   }
 
   /* -- Badges ----------------------------------------------------------- */
@@ -362,54 +408,12 @@
     white-space: nowrap;
   }
 
-  /* -- Adire ground ------------------------------------------------------
-     The indigo panel used behind the hero and the footer. The generated
-     resist-dye texture sits under a colour wash so white text stays well
-     above 4.5:1 no matter how the texture falls. */
-  .adire {
-    position: relative;
-    background-color: var(--tu-indigo-deep);
-    color: var(--tu-on-indigo);
-    isolation: isolate;
-  }
-
-  .adire::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("/brand/hero-texture.webp");
-    background-size: cover;
-    background-position: center;
-    opacity: 0.62;
-    z-index: -2;
-  }
-
-  .adire::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--tu-indigo-deep) 46%, transparent) 0%,
-      color-mix(in srgb, var(--tu-indigo-deep) 68%, transparent) 55%,
-      var(--tu-indigo-deep) 100%
-    );
-    z-index: -1;
-  }
-
-  /* Text on the adire ground never inherits the themed ink colour. */
-  .adire h1,
-  .adire h2,
-  .adire h3 {
-    color: var(--tu-on-indigo);
-  }
-
   /* -- Skeletons -------------------------------------------------------- */
   .skeleton {
     background: linear-gradient(
       90deg,
       var(--tu-sunk) 25%,
-      color-mix(in srgb, var(--tu-sunk) 60%, var(--tu-surface)) 50%,
+      color-mix(in srgb, var(--tu-sunk) 55%, var(--tu-surface)) 50%,
       var(--tu-sunk) 75%
     );
     background-size: 200% 100%;
@@ -431,6 +435,13 @@
   /* Reserves the card image box so the grid never reflows as photos arrive. */
   .aspect-item {
     aspect-ratio: 4 / 3;
+  }
+
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .line-clamp-2 {

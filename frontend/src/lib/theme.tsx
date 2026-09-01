@@ -12,12 +12,17 @@ interface ThemeState {
 const STORAGE_KEY = "tradeup-theme";
 const ThemeContext = createContext<ThemeState | null>(null);
 
+/**
+ * The design is built on a white ground, so light is the default and dark is
+ * something a student opts into — rather than something their laptop decides
+ * for them the first time they open the site.
+ */
 function readStored(): Theme {
   try {
     const value = localStorage.getItem(STORAGE_KEY);
-    return value === "light" || value === "dark" ? value : "system";
+    return value === "light" || value === "dark" || value === "system" ? value : "light";
   } catch {
-    return "system";
+    return "light";
   }
 }
 
@@ -48,8 +53,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);
     try {
-      if (next === "system") localStorage.removeItem(STORAGE_KEY);
-      else localStorage.setItem(STORAGE_KEY, next);
+      localStorage.setItem(STORAGE_KEY, next);
     } catch {
       /* The choice just will not survive a reload. */
     }

@@ -143,13 +143,13 @@ export function ListingPage() {
         {/* Buy box ---------------------------------------------------- */}
         <div className="lg:sticky lg:top-24 lg:h-fit">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge tone={listing.intentName === "SELL" ? "neutral" : "marigold"}>
+            <Badge tone={listing.intentName === "SELL" ? "neutral" : "green"}>
               {listing.intentName !== "SELL" && <Repeat2 className="h-3 w-3" aria-hidden="true" />}
               {listing.intentLabel}
             </Badge>
-            {listing.statusName === "RESERVED" && <Badge tone="indigo">Reserved</Badge>}
-            {listing.statusName === "COMPLETED" && <Badge tone="leaf">Traded</Badge>}
-            {listing.statusName === "FLAGGED" && <Badge tone="clay">Under review</Badge>}
+            {listing.statusName === "RESERVED" && <Badge tone="blue">Reserved</Badge>}
+            {listing.statusName === "COMPLETED" && <Badge tone="green">Traded</Badge>}
+            {listing.statusName === "FLAGGED" && <Badge tone="red">Under review</Badge>}
           </div>
 
           <h1 className="mt-3 text-[clamp(1.6rem,3.4vw,2.35rem)]">{listing.title}</h1>
@@ -159,7 +159,7 @@ export function ListingPage() {
           </p>
 
           {listing.acceptsSwap && listing.swapWanted && (
-            <div className="mt-4 rounded-xl bg-marigold-soft p-4">
+            <div className="mt-4 rounded-xl bg-green-soft p-4">
               <p className="eyebrow">Would swap for</p>
               <p className="mt-1.5 text-sm leading-relaxed text-ink">{listing.swapWanted}</p>
             </div>
@@ -176,14 +176,14 @@ export function ListingPage() {
               <Eye className="h-4 w-4" aria-hidden="true" />
               {listing.viewCount} views
             </span>
-            <span className="inline-flex items-center gap-1.5 text-leaf">
+            <span className="inline-flex items-center gap-1.5 text-green">
               <Leaf className="h-4 w-4" aria-hidden="true" />
               Saves {listing.co2SavedKg.toFixed(1)} kg CO₂e
             </span>
           </div>
 
           {notice && (
-            <p role="status" className="mt-5 rounded-lg bg-leaf-soft px-4 py-3 text-sm text-leaf">
+            <p role="status" className="mt-5 rounded-lg bg-green-soft px-4 py-3 text-sm text-green">
               {notice}
             </p>
           )}
@@ -296,7 +296,7 @@ function OwnerControls({
 
   return (
     <>
-      <p className="rounded-xl bg-indigo-soft px-4 py-3 text-sm text-indigo">
+      <p className="rounded-xl bg-blue-soft px-4 py-3 text-sm text-blue">
         This is your listing.
         {listing.pendingOfferCount > 0 &&
           ` ${listing.pendingOfferCount} offer${listing.pendingOfferCount === 1 ? "" : "s"} waiting on you.`}
@@ -567,7 +567,7 @@ function OfferModal({
         </Field>
 
         {error && (
-          <p role="alert" className="rounded-lg bg-clay-soft px-3.5 py-2.5 text-sm text-clay">
+          <p role="alert" className="rounded-lg bg-red-soft px-3.5 py-2.5 text-sm text-red">
             {error}
           </p>
         )}
@@ -652,7 +652,7 @@ function ReportModal({ listingId, onClose }: { listingId: number; onClose: () =>
         </Field>
 
         {error && (
-          <p role="alert" className="rounded-lg bg-clay-soft px-3.5 py-2.5 text-sm text-clay">
+          <p role="alert" className="rounded-lg bg-red-soft px-3.5 py-2.5 text-sm text-red">
             {error}
           </p>
         )}

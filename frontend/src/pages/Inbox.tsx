@@ -66,7 +66,7 @@ export function Inbox() {
 
                   {conversation.unreadCount > 0 && (
                     <span
-                      className="grid h-6 min-w-6 shrink-0 place-items-center rounded-full bg-clay px-1.5 font-mono text-[0.625rem] font-bold text-white"
+                      className="grid h-6 min-w-6 shrink-0 place-items-center rounded-full bg-red px-1.5 font-mono text-[0.625rem] font-bold text-white"
                       aria-label={`${conversation.unreadCount} unread`}
                     >
                       {conversation.unreadCount}

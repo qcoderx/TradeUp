@@ -18,12 +18,12 @@ function AuthShell({ title, lead, children }: { title: string; lead: string; chi
         </div>
       </div>
 
-      <aside className="adire hidden flex-col justify-center px-12 lg:flex">
+      <aside className="hidden flex-col justify-center bg-blue px-12 lg:flex">
         <blockquote className="max-w-md">
           <p className="font-display text-[2rem] leading-[1.15] font-semibold text-white">
             The textbook you finished with in June is the one a first year cannot afford in October.
           </p>
-          <footer className="mt-6 font-mono text-[0.6875rem] tracking-[0.14em] text-marigold-bright uppercase">
+          <footer className="mt-6 font-mono text-[0.6875rem] tracking-[0.14em] text-white/70 uppercase">
             TradeUp · Group 15 · COS202
           </footer>
         </blockquote>
@@ -87,7 +87,7 @@ export function SignIn() {
         </Field>
 
         {error && (
-          <p role="alert" className="rounded-lg bg-clay-soft px-3.5 py-2.5 text-sm text-clay">
+          <p role="alert" className="rounded-lg bg-red-soft px-3.5 py-2.5 text-sm text-red">
             {error}
           </p>
         )}
@@ -242,7 +242,7 @@ export function Join() {
         </div>
 
         {error && (
-          <p role="alert" className="rounded-lg bg-clay-soft px-3.5 py-2.5 text-sm text-clay">
+          <p role="alert" className="rounded-lg bg-red-soft px-3.5 py-2.5 text-sm text-red">
             {error}
           </p>
         )}

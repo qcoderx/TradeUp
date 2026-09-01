@@ -34,15 +34,15 @@ const CONCEPTS = [
 export function AboutPage() {
   return (
     <>
-      <section className="adire">
+      <section className="hero-panel">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-24">
-          <p className="font-mono text-[0.6875rem] tracking-[0.16em] text-marigold-bright uppercase">
+          <p className="font-mono text-[0.6875rem] tracking-[0.16em] text-green uppercase">
             About the project
           </p>
           <h1 className="mt-5 max-w-3xl text-[clamp(2.2rem,5.4vw,3.5rem)] leading-[1.02]">
             A course project we would actually use
           </h1>
-          <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-white/78">
+          <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-muted">
             TradeUp was submitted for COS202 Computer Programming II at the University of Lagos. The brief
             asked for a demonstration of core Java. We wanted something that would still be worth running
             after it had been marked.

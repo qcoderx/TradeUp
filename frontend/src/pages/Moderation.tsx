@@ -112,8 +112,8 @@ function ReportRow({ report, onResolved }: { report: ReportView; onResolved: () 
 
         <div className="min-w-48 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge tone="clay">{report.reasonLabel}</Badge>
-            <Badge tone={report.listingStatus === "FLAGGED" ? "clay" : "neutral"}>
+            <Badge tone="red">{report.reasonLabel}</Badge>
+            <Badge tone={report.listingStatus === "FLAGGED" ? "red" : "neutral"}>
               Listing {report.listingStatus.toLowerCase()}
             </Badge>
             <span className="text-xs text-muted">{timeAgo(report.createdAt)}</span>
@@ -162,7 +162,7 @@ function ReportRow({ report, onResolved }: { report: ReportView; onResolved: () 
           />
 
           {error && (
-            <p role="alert" className="text-sm text-clay">
+            <p role="alert" className="text-sm text-red">
               {error}
             </p>
           )}

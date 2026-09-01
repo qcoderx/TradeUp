@@ -9,8 +9,8 @@
       name="description"
       content="Buy, sell and swap textbooks, lab kit and hostel essentials with other students at the University of Lagos. Built by Group 15 for SDG 12."
     />
-    <meta name="theme-color" content="#16204A" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0B1024" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b1622" media="(prefers-color-scheme: dark)" />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -37,7 +37,7 @@
       (function () {
         try {
           var saved = localStorage.getItem("tradeup-theme");
-          var dark = saved === "dark" || (!saved && matchMedia("(prefers-color-scheme: dark)").matches);
+          var dark = saved === "dark";
           document.documentElement.classList.toggle("dark", dark);
         } catch (e) {
           /* Private browsing can throw on localStorage; the light theme is fine. */

@@ -166,7 +166,7 @@ export function SellPage() {
                   type="button"
                   onClick={() => set("imageUrls", form.imageUrls.filter((entry) => entry !== url))}
                   aria-label={`Remove photo ${index + 1}`}
-                  className="absolute top-1 right-1 grid h-7 w-7 cursor-pointer place-items-center rounded-full bg-surface/92 text-muted transition-colors duration-200 hover:text-clay"
+                  className="absolute top-1 right-1 grid h-7 w-7 cursor-pointer place-items-center rounded-full bg-surface/92 text-muted transition-colors duration-200 hover:text-red"
                 >
                   <X className="h-3.5 w-3.5" aria-hidden="true" />
                 </button>
@@ -365,7 +365,7 @@ export function SellPage() {
         </Field>
 
         {error && (
-          <p role="alert" className="rounded-lg bg-clay-soft px-3.5 py-2.5 text-sm text-clay">
+          <p role="alert" className="rounded-lg bg-red-soft px-3.5 py-2.5 text-sm text-red">
             {error}
           </p>
         )}

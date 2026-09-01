@@ -8,8 +8,8 @@ import { cx } from "../lib/format";
  * it has to be able to take its colour from whatever it is sitting on.
  */
 export function LogoMark({ className, tone = "duo" }: { className?: string; tone?: "duo" | "mono" }) {
-  const rising = tone === "mono" ? "currentColor" : "var(--tu-marigold-bright)";
-  const returning = tone === "mono" ? "currentColor" : "var(--tu-indigo)";
+  const rising = tone === "mono" ? "currentColor" : "var(--tu-green-bright)";
+  const returning = tone === "mono" ? "currentColor" : "var(--tu-blue)";
 
   return (
     <svg viewBox="0 0 48 48" className={className} aria-hidden="true" focusable="false">
@@ -44,7 +44,7 @@ export function Logo({
       <LogoMark className="h-8 w-8 shrink-0" tone={tone} />
       {showWord && (
         <span className="font-display text-[1.35rem] leading-none font-bold tracking-[-0.03em]">
-          Trade<span className="text-marigold">Up</span>
+          Trade<span className="text-green">Up</span>
         </span>
       )}
     </span>

@@ -69,21 +69,24 @@ function Hero({ impact, categories }: { impact: ImpactSnapshot | null; categorie
   const busiest = categories.filter((category) => category.availableCount > 0).slice(0, 6);
 
   return (
-    <section className="adire overflow-hidden">
+    <section className="hero-panel overflow-hidden">
       <div className="mx-auto grid max-w-7xl gap-14 px-4 pt-16 pb-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pt-20 lg:pb-20">
         <div>
+          {/* The three crest colours, in the order they read on the arms. */}
+          <motion.div custom={0} initial="hidden" animate="show" variants={rise} className="crest-rule w-28" />
+
           <motion.p
-            custom={0}
+            custom={1}
             initial="hidden"
             animate="show"
             variants={rise}
-            className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 font-mono text-[0.6875rem] tracking-[0.14em] text-marigold-bright uppercase ring-1 ring-white/15"
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-green-soft px-3 py-1.5 font-mono text-[0.6875rem] tracking-[0.14em] text-green uppercase"
           >
             University of Lagos · SDG 12
           </motion.p>
 
           <motion.h1
-            custom={1}
+            custom={2}
             initial="hidden"
             animate="show"
             variants={rise}
@@ -91,15 +94,15 @@ function Hero({ impact, categories }: { impact: ImpactSnapshot | null; categorie
           >
             Nothing here is new.
             <br />
-            <span className="text-marigold-bright">That is the point.</span>
+            <span className="text-green">That is the point.</span>
           </motion.h1>
 
           <motion.p
-            custom={2}
+            custom={3}
             initial="hidden"
             animate="show"
             variants={rise}
-            className="mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-white/78"
+            className="mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-muted"
           >
             Textbooks, lab coats, kettles and desk lamps, passed from one student to the next instead of
             being bought twice. Find what you need on campus, at a price a student can actually pay.
@@ -108,7 +111,7 @@ function Hero({ impact, categories }: { impact: ImpactSnapshot | null; categorie
           {/* Search is the hero CTA: the fastest way to find out whether the
               thing you need is already sitting in someone else's room. */}
           <motion.form
-            custom={3}
+            custom={4}
             initial="hidden"
             animate="show"
             variants={rise}
@@ -140,21 +143,21 @@ function Hero({ impact, categories }: { impact: ImpactSnapshot | null; categorie
 
           {busiest.length > 0 && (
             <motion.div
-              custom={4}
+              custom={5}
               initial="hidden"
               animate="show"
               variants={rise}
               className="mt-5 flex flex-wrap items-center gap-2"
             >
-              <span className="mr-1 text-xs text-white/45">Popular right now</span>
+              <span className="mr-1 text-xs text-faint">Popular right now</span>
               {busiest.map((category) => (
                 <Link
                   key={category.slug}
                   to={`/browse?category=${category.slug}`}
-                  className="cursor-pointer rounded-full bg-white/8 px-3 py-1.5 text-xs font-medium text-white/80 ring-1 ring-white/12 transition-colors duration-200 hover:bg-white/16 hover:text-white"
+                  className="cursor-pointer rounded-full bg-sunk px-3 py-1.5 text-xs font-medium text-muted ring-1 ring-line transition-colors duration-200 hover:bg-blue-soft hover:text-white"
                 >
                   {category.label}
-                  <span className="ml-1.5 font-mono text-white/45">{category.availableCount}</span>
+                  <span className="ml-1.5 font-mono text-faint">{category.availableCount}</span>
                 </Link>
               ))}
             </motion.div>
@@ -162,11 +165,11 @@ function Hero({ impact, categories }: { impact: ImpactSnapshot | null; categorie
 
           {impact && (
             <motion.dl
-              custom={5}
+              custom={6}
               initial="hidden"
               animate="show"
               variants={rise}
-              className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-white/12 pt-6"
+              className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-line pt-6"
             >
               <HeroStat value={String(impact.itemsRehomed)} label="items rehomed" />
               <HeroStat value={formatCo2(impact.co2SavedKg)} label="CO₂e avoided" />
@@ -187,8 +190,8 @@ function HeroStat({ value, label }: { value: string; label: string }) {
     <div>
       <dt className="sr-only">{label}</dt>
       <dd>
-        <span className="tabular block font-display text-2xl leading-none font-bold text-white">{value}</span>
-        <span className="mt-1.5 block text-xs leading-snug text-white/55">{label}</span>
+        <span className="tabular block font-display text-2xl leading-none font-bold text-ink">{value}</span>
+        <span className="mt-1.5 block text-xs leading-snug text-muted">{label}</span>
       </dd>
     </div>
   );
@@ -208,7 +211,7 @@ function HeroTickets({ reduceMotion }: { reduceMotion: boolean }) {
   if (!front) {
     return (
       <div className="relative hidden h-[26rem] lg:block" aria-hidden="true">
-        <div className="absolute top-10 right-10 w-64 rotate-[5deg] rounded-[14px] bg-white/8 ring-1 ring-white/12 backdrop-blur-sm">
+        <div className="absolute top-10 right-10 w-64 rotate-[5deg] rounded-[14px] bg-sunk ring-1 ring-line backdrop-blur-sm">
           <div className="aspect-item" />
           <div className="h-24" />
         </div>
@@ -223,7 +226,7 @@ function HeroTickets({ reduceMotion }: { reduceMotion: boolean }) {
           initial={{ opacity: 0, y: reduceMotion ? 0 : 22, rotate: 7 }}
           animate={{ opacity: 1, y: 0, rotate: 7 }}
           transition={{ delay: reduceMotion ? 0 : 0.34, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute top-0 right-2 w-56 overflow-hidden rounded-[14px] shadow-[0_20px_50px_-24px_rgb(0_0_0/0.8)] ring-1 ring-white/12"
+          className="absolute top-0 right-2 w-56 overflow-hidden rounded-[14px] shadow-[0_20px_50px_-24px_rgb(0_0_0/0.8)] ring-1 ring-line"
         >
           <img src={back.primaryImageUrl} alt="" className="aspect-item w-full object-cover" />
         </motion.div>
@@ -255,7 +258,7 @@ function FreshOnTheBoard({ listings, loading }: { listings: ListingCard[]; loadi
         </div>
         <Link
           to="/browse"
-          className="group inline-flex cursor-pointer items-center gap-1.5 text-sm font-semibold text-ink transition-colors duration-200 hover:text-leaf"
+          className="group inline-flex cursor-pointer items-center gap-1.5 text-sm font-semibold text-ink transition-colors duration-200 hover:text-green"
         >
           See everything
           <ArrowRight
@@ -291,7 +294,7 @@ function HowItWorks() {
       <ol className="mt-10 grid gap-px overflow-hidden rounded-2xl bg-line md:grid-cols-3">
         {STEPS.map((step, index) => (
           <li key={step.title} className="bg-surface p-7">
-            <span className="font-mono text-sm font-medium text-marigold">
+            <span className="font-mono text-sm font-medium text-green">
               {String(index + 1).padStart(2, "0")}
             </span>
             <h3 className="mt-3 font-display text-lg leading-snug font-semibold text-ink">{step.title}</h3>
@@ -355,7 +358,7 @@ function ImpactBand({ impact }: { impact: ImpactSnapshot | null }) {
 function ImpactCell({ icon, value, label }: { icon?: React.ReactNode; value: string; label: string }) {
   return (
     <div className="bg-surface p-5">
-      {icon && <span className="mb-2 inline-flex text-leaf">{icon}</span>}
+      {icon && <span className="mb-2 inline-flex text-green">{icon}</span>}
       <dd className="tabular font-display text-2xl leading-none font-bold text-ink">{value}</dd>
       <dt className="mt-1.5 text-xs leading-snug text-muted">{label}</dt>
     </div>

@@ -18,15 +18,15 @@ export function TeamPage() {
 
   return (
     <>
-      <section className="adire">
+      <section className="hero-panel">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-24">
-          <p className="font-mono text-[0.6875rem] tracking-[0.16em] text-marigold-bright uppercase">
+          <p className="font-mono text-[0.6875rem] tracking-[0.16em] text-green uppercase">
             Group 15 · COS202 Computer Programming II
           </p>
           <h1 className="mt-5 max-w-3xl text-[clamp(2.2rem,5.4vw,3.5rem)] leading-[1.02]">
             Eleven students who got tired of watching good things go to waste
           </h1>
-          <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-white/78">
+          <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-muted">
             We are second and third year students at the University of Lagos, from Data Science,
             Mathematics, Computer Science and Science Education. TradeUp is our answer to a problem we
             watch play out on our own campus every single semester.
@@ -134,7 +134,7 @@ function MemberCard({ member, lead = false }: { member: TeamMember; lead?: boole
       className={cx(
         "flex items-center gap-4 rounded-xl p-5 transition-shadow duration-200",
         lead
-          ? "bg-surface shadow-[0_0_0_1px_var(--tu-marigold-bright)]"
+          ? "bg-surface shadow-[0_0_0_1px_var(--tu-green-bright)]"
           : "bg-surface shadow-[var(--shadow-inset-line)] hover:shadow-[var(--shadow-ticket),var(--shadow-inset-line)]"
       )}
     >
@@ -151,7 +151,7 @@ function MemberCard({ member, lead = false }: { member: TeamMember; lead?: boole
       </div>
 
       {lead && (
-        <span className="shrink-0 self-start rounded-md bg-marigold-soft px-2 py-1 font-mono text-[0.625rem] tracking-wide text-marigold uppercase">
+        <span className="shrink-0 self-start rounded-md bg-green-soft px-2 py-1 font-mono text-[0.625rem] tracking-wide text-green uppercase">
           {member.role === "Team Captain" ? "Captain" : "Assistant"}
         </span>
       )}

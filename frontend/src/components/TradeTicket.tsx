@@ -82,13 +82,13 @@ export function TradeTicket({
           {/* Intent and status sit on the photo so the body stays for words. */}
           <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
             {listing.intentName !== "SELL" && (
-              <Badge tone="marigold" className="shadow-sm backdrop-blur">
+              <Badge tone="green" className="shadow-sm backdrop-blur">
                 <Repeat2 className="h-3 w-3" aria-hidden="true" />
                 {listing.intentName === "SWAP" ? "Swap" : "Sale or swap"}
               </Badge>
             )}
             {reserved && (
-              <Badge tone="indigo" className="shadow-sm backdrop-blur">
+              <Badge tone="blue" className="shadow-sm backdrop-blur">
                 Reserved
               </Badge>
             )}
@@ -103,7 +103,7 @@ export function TradeTicket({
               className={cx(
                 "absolute top-2 right-2 grid h-9 w-9 cursor-pointer place-items-center rounded-full",
                 "bg-surface/92 backdrop-blur transition-colors duration-200",
-                saved ? "text-marigold" : "text-muted hover:text-ink"
+                saved ? "text-green" : "text-muted hover:text-ink"
               )}
             >
               <Bookmark className="h-4 w-4" fill={saved ? "currentColor" : "none"} aria-hidden="true" />
@@ -141,7 +141,7 @@ export function TradeTicket({
           <span className="font-mono text-[0.6875rem] tracking-wide text-faint">{listing.reference}</span>
           <span className="flex items-center gap-2 font-mono text-[0.6875rem] tracking-wide">
             <span className="text-muted">{formatOwnerGeneration(listing.ownerGeneration)}</span>
-            <span className="inline-flex items-center gap-1 text-leaf">
+            <span className="inline-flex items-center gap-1 text-green">
               <Leaf className="h-3 w-3" aria-hidden="true" />
               {listing.co2SavedKg.toFixed(1)}kg
             </span>

@@ -131,7 +131,7 @@ export function Navbar() {
               >
                 <MessageSquare className="h-5 w-5" aria-hidden="true" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1 grid h-4 min-w-4 place-items-center rounded-full bg-clay px-1 font-mono text-[0.5625rem] font-bold text-white">
+                  <span className="absolute top-1 right-1 grid h-4 min-w-4 place-items-center rounded-full bg-red px-1 font-mono text-[0.5625rem] font-bold text-white">
                     {unreadCount > 9 ? "9+" : unreadCount}
                   </span>
                 )}

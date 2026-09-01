@@ -281,13 +281,22 @@ With the backend running, the full interactive API is at
 
 ## Design
 
-The identity is **"Adire & Ticket"**. The ground is Yoruba *adire* indigo — the resist-dyed
-cloth this campus grew up around — rather than the usual marketplace blue; marigold marks
-anything moving up, and leaf green marks a completed trade. Type is Bricolage Grotesque over
+The palette is the University of Lagos crest, sampled from the artwork rather than guessed:
+**blue `#025AA4`**, **green `#019646`**, **red `#EB1B23`**, on white.
+
+Blue carries the brand and every primary action. Green carries anything positive — an item on
+offer, a completed trade, CO₂ saved. Red is held back for warnings and errors, so it still means
+something when it appears. The three of them together form the **crest rule**, the thin
+tricolour bar that opens the hero and caps the footer.
+
+Two of the crest colours are too light for text on white — green measures 3.85:1 and red 4.46:1,
+both under the 4.5:1 AA threshold. So each has two steps: the crest value is the **fill**, and a
+darkened value is the **text**. Blue needs no such split at 7:1. Type is Bricolage Grotesque over
 Instrument Sans, with JetBrains Mono for reference codes and provenance stamps.
 
-The interface supports light and dark themes, respects `prefers-reduced-motion`, keeps every
-control at a 44px touch target, and is responsive from 375px up.
+The interface is white by default and dark is opt-in through the toggle. It respects
+`prefers-reduced-motion`, keeps every control at a 44px touch target, and is responsive from
+375px.
 
 ### Regenerating the imagery
 

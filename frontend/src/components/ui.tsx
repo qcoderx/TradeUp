@@ -70,7 +70,7 @@ export function Field({ label, htmlFor, error, hint, required, children }: Field
       <label htmlFor={htmlFor} className="text-sm font-semibold text-ink">
         {label}
         {required && (
-          <span className="ml-1 text-clay" aria-hidden="true">
+          <span className="ml-1 text-red" aria-hidden="true">
             *
           </span>
         )}
@@ -78,7 +78,7 @@ export function Field({ label, htmlFor, error, hint, required, children }: Field
       {children}
       {hint && !error && <p className="text-xs text-muted">{hint}</p>}
       {error && (
-        <p id={`${htmlFor}-error`} role="alert" className="text-xs font-medium text-clay">
+        <p id={`${htmlFor}-error`} role="alert" className="text-xs font-medium text-red">
           {error}
         </p>
       )}
@@ -151,14 +151,18 @@ export function Select({
    Badges, cards, states
    ------------------------------------------------------------------------- */
 
-type BadgeTone = "neutral" | "leaf" | "marigold" | "indigo" | "clay";
+/**
+ * Three hues, three jobs. The crest has no fourth colour, so a badge that does
+ * not mean "good", "informational" or "wrong" stays neutral rather than
+ * inventing one.
+ */
+type BadgeTone = "neutral" | "green" | "blue" | "red";
 
 const BADGE_TONES: Record<BadgeTone, string> = {
   neutral: "bg-sunk text-muted",
-  leaf: "bg-leaf-soft text-leaf",
-  marigold: "bg-marigold-soft text-marigold",
-  indigo: "bg-indigo-soft text-indigo",
-  clay: "bg-clay-soft text-clay",
+  green: "bg-green-soft text-green",
+  blue: "bg-blue-soft text-blue",
+  red: "bg-red-soft text-red",
 };
 
 export function Badge({
@@ -203,7 +207,7 @@ export function EmptyState({
 
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-clay/30 bg-clay-soft px-6 py-10 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-red/30 bg-red-soft px-6 py-10 text-center">
       <h3 className="font-display text-lg text-ink">That did not load</h3>
       <p className="max-w-sm text-sm text-muted">{message}</p>
       {onRetry && (
@@ -223,7 +227,7 @@ export function Skeleton({ className }: { className?: string }) {
 export function Avatar({ initials, size = 36 }: { initials: string; size?: number }) {
   return (
     <span
-      className="inline-flex shrink-0 items-center justify-center rounded-full bg-indigo-soft font-mono font-medium text-indigo"
+      className="inline-flex shrink-0 items-center justify-center rounded-full bg-blue-soft font-mono font-medium text-blue"
       style={{ width: size, height: size, fontSize: size * 0.36 }}
       aria-hidden="true"
     >

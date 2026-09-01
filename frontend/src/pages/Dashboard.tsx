@@ -161,7 +161,7 @@ function OfferRow({ offer, onResolved }: { offer: OfferView; onResolved: () => v
 
       <div className="min-w-48 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <Badge tone={offer.kind === "CASH" ? "leaf" : "marigold"}>
+          <Badge tone={offer.kind === "CASH" ? "green" : "blue"}>
             {offer.kind === "CASH" ? `₦${formatAmount(offer.amountKobo)}` : "Swap"}
           </Badge>
           <span className="text-xs text-muted">{timeAgo(offer.createdAt)}</span>
@@ -183,7 +183,7 @@ function OfferRow({ offer, onResolved }: { offer: OfferView; onResolved: () => v
 
         {offer.note && <p className="mt-2 text-sm leading-relaxed text-muted italic">“{offer.note}”</p>}
         {error && (
-          <p role="alert" className="mt-2 text-xs text-clay">
+          <p role="alert" className="mt-2 text-xs text-red">
             {error}
           </p>
         )}
